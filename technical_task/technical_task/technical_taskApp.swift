@@ -12,6 +12,7 @@ struct technical_taskApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+           
         }
     }
 }
