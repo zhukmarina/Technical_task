@@ -42,9 +42,11 @@ struct IPInfoView: View {
                         Text(info.timezone)
                         
                         if let readmeURL = URL(string: info.readme) {
-                            Link("\(info.readme)", destination: readmeURL)
-                                .foregroundColor(.blueMain)
-                                
+                            Link(destination: readmeURL) {
+                                Text(info.readme)
+                                    .foregroundColor(.blueMain)
+                                    .underline()
+                            }
                         } else {
                             Text(info.readme)
                         }

@@ -43,11 +43,11 @@ struct TextFieldforIP: View {
                 }
             }
             .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(isValid == true ? Color.green : (isValid == false ? Color.redMain : Color.blueGrey))
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                .stroke(isValid == true ? Color.green : (ipAddress.isEmpty ? Color.blueGrey : Color.redMain))
                     )
-                }
+        }
     }
 }
 
