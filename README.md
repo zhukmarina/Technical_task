@@ -19,12 +19,14 @@ A SwiftUI-based app for fetching and displaying information about IP addresses. 
 
 ### Steps to Build and Run
 - Clone the repository:
+```bash
 git clone https://github.com/your-repo/technical-task-app.git
 cd technical-task-app
-
+```
 - Open the project in Xcode:
+```bash
 open TechnicalTaskApp.xcodeproj
-
+```
 - Install required fonts (Montserrat) by ensuring they are part of the Resources/Fonts directory.
 - Build and run the app on a simulator or a physical device.
 
