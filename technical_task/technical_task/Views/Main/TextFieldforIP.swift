@@ -14,12 +14,16 @@ struct TextFieldforIP: View {
     var clearIPAction: () -> Void
   
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading) {
             HStack {
                 if ipAddress.isEmpty {
+
                     Image(systemName: "magnifyingglass")
-                        .font(.system(size: 16))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 20, height: 20)
                         .foregroundColor(.blueMain)
+                        
                 }
                 
                 TextField("", text: $ipAddress, prompt: Text("IP Address"))
@@ -35,12 +39,15 @@ struct TextFieldforIP: View {
                 
                 if !ipAddress.isEmpty {
                     Image(systemName: "xmark")
-                        .font(.system(size: 16))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 20, height: 20)
                         .foregroundColor(.blueMain)
                         .onTapGesture {
                             clearIPAction()
                         }
                 }
+                
             }
             .padding()
             .background(
