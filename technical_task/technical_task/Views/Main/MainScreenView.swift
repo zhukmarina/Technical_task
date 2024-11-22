@@ -9,42 +9,44 @@ import SwiftUI
 struct MainScreenView: View {
     
     @StateObject private var viewModel = UserInfoModels()
-    @State private var ipAddress: String = ""
-    @State private var isValid: Bool? = nil
-    @State private var showingAlert = false
-    @State private var isLoading = false
     
     var body: some View {
         VStack(spacing: 16) {
-            TextFieldforIP(ipAddress: $ipAddress, isValid: $isValid, clearIPAction: clearIP)
+            TextFieldforIP(
+                ipAddress: $viewModel.ipAddress,
+                isValid: $viewModel.isValid,
+                clearIPAction: {
+                    viewModel.clearIP()
+                }
+            )
+            
             VStack(spacing: 8) {
                 Button(action: {
-                    validateIP(&ipAddress, isValid: &isValid)
-                    if isValid == true {
+                    viewModel.validateIP(&viewModel.ipAddress, isValid: &viewModel.isValid)
+                    if viewModel.isValid == true {
                         Task {
-                            isLoading = true
-                            await viewModel.fetchIPInfo(for: ipAddress)
-                            isLoading = false
+                            viewModel.isLoading = true
+                            await viewModel.fetchIPInfo(for: viewModel.ipAddress)
+                            viewModel.isLoading = false
                         }
                     } else {
-                        showingAlert = true
+                        viewModel.showingAlert = true
                     }
                 }) {
                     Text("Get Info")
                         .font(.headline3)
-                        .lineSpacing(20)
                         .foregroundColor(.basicWhite)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.blueMain)
                         .cornerRadius(10)
                 }
-                .alert(isPresented: $showingAlert) {
+                .alert(isPresented: $viewModel.showingAlert) {
                     Alert(
                         title: Text("Alert error"),
                         message: Text("Wrong IP! Please provide a valid IP address"),
                         primaryButton: .default(Text("OK"), action: {
-                            clearIP()
+                            viewModel.clearIP()
                         }),
                         secondaryButton: .cancel(Text("Cancel"))
                     )
@@ -52,11 +54,11 @@ struct MainScreenView: View {
                 
                 Button(action: {
                     Task {
-                        isLoading = true
+                        viewModel.isLoading = true
                         let fetchedIP = await viewModel.fetchUserIP()
-                        ipAddress = fetchedIP ?? ""
-                        isValid = true
-                        isLoading = false
+                        viewModel.ipAddress = fetchedIP ?? ""
+                        viewModel.isValid = true
+                        viewModel.isLoading = false
                     }
                 }) {
                     Text("Find Me")
@@ -69,7 +71,7 @@ struct MainScreenView: View {
                 }
                 
                 Button(action: {
-                    clearIP()
+                    viewModel.clearIP()
                 }) {
                     Text("Reset")
                         .font(.headline3)
@@ -80,8 +82,8 @@ struct MainScreenView: View {
                         .cornerRadius(10)
                 }
             }
-           
-            if isLoading {
+            
+            if viewModel.isLoading {
                 ProgressView()
                     .padding()
             } else if !viewModel.arrayForIpInfo.isEmpty {
@@ -94,11 +96,4 @@ struct MainScreenView: View {
         }
         .padding()
     }
-    
-    private func clearIP() {
-            ipAddress = ""
-            isValid = nil
-            viewModel.ipInfo = nil
-            viewModel.errorMessage = nil
-        }
 }

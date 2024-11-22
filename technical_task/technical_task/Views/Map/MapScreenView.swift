@@ -8,7 +8,7 @@ import SwiftUI
 import MapKit
 
 struct MapScreenView: View {
-
+    
     @Environment(\.dismiss) private var dismiss
     let coordinates: String
     let region: String
@@ -24,10 +24,10 @@ struct MapScreenView: View {
                 .navigationBarBackButtonHidden(true)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
-                                        Text(region)
-                                            .font(.headline3)
-                                            .foregroundColor(.basicDark)
-                                    }
+                        Text(region)
+                            .font(.headline3)
+                            .foregroundColor(.basicDark)
+                    }
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button {
                             dismiss()
@@ -36,13 +36,12 @@ struct MapScreenView: View {
                                 .font(.body1)
                                 .foregroundColor(.basicDark)
                         }
-                        
                     }
                 }
                 .navigationBarTitleDisplayMode(.inline)
             
-          
-         
+            
+            
         } else {
             Text("Invalid coordinates")
                 .padding()
