@@ -8,8 +8,10 @@ import SwiftUI
 import MapKit
 
 struct MapScreenView: View {
+
     @Environment(\.dismiss) private var dismiss
     let coordinates: String
+    let region: String
     
     var body: some View {
         let coordinateParts = coordinates.split(separator: ",")
@@ -19,16 +21,28 @@ struct MapScreenView: View {
             
             MapView(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
                 .edgesIgnoringSafeArea(.bottom)
-//                .navigationBarBackButtonHidden(true)
-//                .toolbar {
-//                    ToolbarItem(placement: .navigationBarLeading) {
-//                        Button {
-//                            dismiss()
-//                        } label: {
-//                            Image(systemName: "chevron.backward")
-//                        }
-//                    }
-//                }
+                .navigationBarBackButtonHidden(true)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                                        Text(region)
+                                            .font(.headline3)
+                                            .foregroundColor(.basicDark)
+                                    }
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "chevron.backward")
+                                .font(.body1)
+                                .foregroundColor(.basicDark)
+                        }
+                        
+                    }
+                }
+                .navigationBarTitleDisplayMode(.inline)
+            
+          
+         
         } else {
             Text("Invalid coordinates")
                 .padding()
