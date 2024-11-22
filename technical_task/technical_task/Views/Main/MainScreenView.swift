@@ -80,19 +80,17 @@ struct MainScreenView: View {
                         .cornerRadius(10)
                 }
             }
-
-        if isLoading {
-            ProgressView()
-                .padding()
-        } else if let info = viewModel.ipInfo {
-            IPInfoView(info: info)
-                .background(RoundedRectangle(cornerRadius: 10).stroke(Color.blueGrey))
-       
-        } else if let errorMessage = viewModel.errorMessage {
-            Text(errorMessage)
-                .foregroundColor(.red)
-                .padding()
-        }
+           
+            if isLoading {
+                ProgressView()
+                    .padding()
+            } else if !viewModel.arrayForIpInfo.isEmpty {
+                IPInfoView(arrayForIpInfo: viewModel.arrayForIpInfo)
+            } else if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+                    .padding()
+            }
         }
         .padding()
     }
