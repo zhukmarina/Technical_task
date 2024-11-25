@@ -7,6 +7,7 @@
 import Foundation
 
 class UserInfoModels: ObservableObject {
+    
     @Published var ipAddress: String = ""
     @Published var isValid: Bool? = nil
     @Published var ipInfo: DMGetInfo?
@@ -17,36 +18,29 @@ class UserInfoModels: ObservableObject {
     
     private let networkService = NetworkService()
     
+    @MainActor
     func fetchUserIP() async -> String? {
-        
         do {
             let result = try await networkService.getUserIP()
-            DispatchQueue.main.async {
-                self.ipAddress = result.ip
-            }
+            self.ipAddress = result.ip
             await fetchIPInfo(for: result.ip)
             return result.ip
         } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "Error: \(error.localizedDescription)"
-            }
+            self.errorMessage = "Error: \(error.localizedDescription)"
             return nil
         }
     }
     
+    @MainActor
     func fetchIPInfo(for ipAddress: String) async {
         do {
             let result = try await networkService.getInfo(for: ipAddress)
-            DispatchQueue.main.async {
                 self.ipInfo = result
                 self.arrayForIpInfo = self.mapIPInfoToArray(result)
-            }
         } catch {
-            DispatchQueue.main.async {
                 self.errorMessage = error.localizedDescription
                 self.ipInfo = nil
                 self.arrayForIpInfo = []
-            }
         }
     }
     
@@ -87,5 +81,4 @@ class UserInfoModels: ObservableObject {
         isValid = regex.firstMatch(in: input, options: [], range: range) != nil
         
     }
-    
 }

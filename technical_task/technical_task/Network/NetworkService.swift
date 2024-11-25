@@ -27,4 +27,15 @@ class NetworkService {
             throw error
         }
     }
+    
+    func fetch<T: Decodable>(from urlString: String, as type: T.Type) async throws -> T {
+            guard let url = URL(string: urlString) else {
+                throw NSError(domain: "", code: 1001, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+            }
+            
+            var urlRequest = URLRequest(url: url)
+            urlRequest.httpMethod = "GET"
+            
+            return try await request(urlRequest: urlRequest)
+        }
 }

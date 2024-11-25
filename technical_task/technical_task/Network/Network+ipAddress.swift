@@ -6,29 +6,14 @@
 //
 
 import Foundation
+
 extension NetworkService {
     
     func getUserIP() async throws -> DMUserIP {
-        let urlString = "https://api.ipify.org/?format=json"
-        guard let url = URL(string: urlString) else {
-            throw NSError(domain: "", code: 1001, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
-        }
-
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "GET"
-        
-        return try await request(urlRequest: urlRequest)
-    }
+           return try await fetch(from: "https://api.ipify.org/?format=json", as: DMUserIP.self)
+       }
     
     func getInfo(for ipAddress: String) async throws -> DMGetInfo {
-        let urlString = "https://ipinfo.io/\(ipAddress)/geo"
-        guard let url = URL(string: urlString) else {
-            throw NSError(domain: "", code: 1001, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+            return try await fetch(from: "https://ipinfo.io/\(ipAddress)/geo", as: DMGetInfo.self)
         }
-
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "GET"
-        
-        return try await request(urlRequest: urlRequest)
-    }
 }
